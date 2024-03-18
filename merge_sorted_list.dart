@@ -23,6 +23,26 @@ void main() {
   final sortedMergeListWithPointer = mergeSortedListWith2Pointer(a, b);
   print(sortedMergeList);
   print("this is sorted list: $sortedMergeListWithPointer");
+
+  Node? sortedListWithLinkedList = sortListWithLinkedList(
+    Node(
+      value: 1,
+      next: Node(
+        value: 3,
+        next: Node(
+          value: 5,
+        ),
+      ),
+    ),
+    Node(
+      value: 2,
+      next: Node(value: 4),
+    ),
+  );
+  while (sortedListWithLinkedList != null) {
+    print(sortedListWithLinkedList.value);
+    sortedListWithLinkedList = sortedListWithLinkedList.next;
+  }
 }
 
 List sortTwoList(List l1, List l2) {
@@ -59,7 +79,6 @@ List<int> mergeSortedListWith2Pointer(List<int> l1, List<int> l2) {
       j++;
     }
   }
-
   while (i < l1.length) {
     sortedResultList.add(l1[i]);
     i++;
@@ -68,6 +87,43 @@ List<int> mergeSortedListWith2Pointer(List<int> l1, List<int> l2) {
     sortedResultList.add(l2[j]);
     j++;
   }
-
   return sortedResultList;
+}
+
+///Solve this problem using LinkedList;
+///Will create our node class which have value and next Node of our linkedList
+class Node {
+  Node({required this.value, this.next});
+  int value;
+  Node? next;
+}
+
+sortListWithLinkedList(Node? n1, Node? n2) {
+  //will create one dummy node;
+  Node? dummyNode = Node(
+    value: -1,
+  );
+
+  Node? currentNode = dummyNode;
+
+  while (n1 != null && n2 != null) {
+    if (n1.value <= n2.value) {
+      currentNode?.next = n1;
+      n1 = n1.next;
+    } else {
+      currentNode?.next = n2;
+      n2 = n2.next;
+    }
+    currentNode = currentNode?.next;
+  }
+  while (n1 != null) {
+    currentNode?.next = n1;
+    n1 = n1.next;
+  }
+  while (n2 != null) {
+    currentNode?.next = n2;
+    n2 = n2.next;
+  }
+
+  return dummyNode.next; //will return head of our merged list
 }
